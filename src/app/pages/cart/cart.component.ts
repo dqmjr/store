@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Cart, CartModel} from "../../models/cart.model";
+import {CartService} from "../../services/cart.service";
 
 @Component({
   selector: 'app-cart',
@@ -17,13 +18,13 @@ export class CartComponent implements OnInit {
           price: 150,
           quantity: 1
       },
-          {
-              id: 2,
-              product: 'https://via.placeholder.com/150',
-              name: 'snickers',
-              price: 150,
-              quantity: 2
-          }
+      {
+          id: 2,
+          product: 'https://via.placeholder.com/150',
+          name: 'snickers',
+          price: 150,
+          quantity: 2
+      }
     ]
   }
 
@@ -36,7 +37,7 @@ export class CartComponent implements OnInit {
       'total',
       'action'
   ]
-  constructor() { }
+  constructor(private cartService: CartService) { }
 
   ngOnInit(): void
   {
@@ -44,6 +45,6 @@ export class CartComponent implements OnInit {
   }
 
     getTotal(items: Array<CartModel>):number {
-        return items.map((item) => item.price * item.quantity).reduce((prev, current) => prev + current, 0)
+        return this.cartService.getTotal(items)
     }
 }
