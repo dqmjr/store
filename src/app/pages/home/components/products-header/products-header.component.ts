@@ -9,6 +9,8 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 export class ProductsHeaderComponent implements OnInit {
 
   @Output() columnCountChange = new EventEmitter<number>;
+  @Output() itemsCountChange = new EventEmitter<number>;
+  @Output() sortChange = new EventEmitter<string>;
 
   sort = 'desc'
   itemsShowCount = 12;
@@ -19,10 +21,12 @@ export class ProductsHeaderComponent implements OnInit {
 
   onSortUpdated(newSort: string) {
     this.sort = newSort
+    this.sortChange.emit(newSort);
   }
 
   onCountUpdated(itemCount: number) {
     this.itemsShowCount = itemCount
+    this.itemsCountChange.emit(itemCount)
   }
   onColumnsUpdated (colsNum: number) {
     this.columnCountChange.emit(colsNum)

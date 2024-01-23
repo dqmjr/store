@@ -17,8 +17,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   category: string | undefined;
   rowHeight = ROWS_HEIGHT [this.cols]
   products: Array<Product> | undefined
-  sort: 'desc' | undefined
-  count: '12' | undefined
+  sort: string | undefined
+  count: string | undefined
   productSubscription: Subscription | undefined
 
   constructor(private cartService: CartService, private storeService: StoreService) { }
@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onChangeCategory(category: string) {
     this.category = category
+    this.getProducts()
   }
 
   onAddToCart(product: Product) {
@@ -47,7 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private getProducts() {
-    this.productSubscription = this.storeService.getAllProducts(this.count, this.sort)
+    this.productSubscription = this.storeService.getAllProducts(this.count, this.sort, this.category)
         .subscribe((_products) => this.products = _products)
   }
 
@@ -55,5 +56,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.productSubscription) {
       this.productSubscription.unsubscribe()
     }
+  }
+
+  onItemsCountChange(newCount: number) {
+    this.count = newCount.toString()
+    this.getProducts()
+  }
+
+  onSortChange(newSort: string) {
+    this.sort = newSort
+    this.getProducts()
   }
 }
